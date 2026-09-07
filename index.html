@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f5f5ed"><title>果流实验室 · Fruit Flow</title><style>
+
+:root{--ink:#263b32;--muted:#819078;--lime:#d6ef73;--paper:#f5f5ed}*{box-sizing:border-box}html{color-scheme:light}body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,"PingFang SC","Microsoft Yahei",sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.42;cursor:default}button:focus-visible,a:focus-visible{outline:3px solid #eb965f;outline-offset:3px}[hidden]{display:none!important}header{max-width:1380px;margin:auto;height:76px;padding:0 36px;border-bottom:1px solid #dce1d5;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800}.brand small{font-size:10px;font-weight:400;color:var(--muted)}.mark{width:32px;height:32px;background:var(--ink);color:var(--lime);border-radius:11px;display:grid;place-items:center;font-size:24px}.eyebrow{font-size:10px;letter-spacing:1.8px;font-weight:700}.header-right{font-size:10px;letter-spacing:1.3px;color:var(--muted)}main{max-width:1380px;margin:auto;padding:28px 36px}.intro{display:flex;align-items:end;justify-content:space-between;margin-bottom:23px}h1{font-size:39px;letter-spacing:-1.8px;margin:8px 0 0}.intro p{font-size:12px;line-height:1.8;color:var(--muted);margin:0}.layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:22px;align-items:start}.lab{position:sticky;top:15px;min-width:0;background:#edf1e4;border:1px solid #dce2d4;border-radius:23px;overflow:hidden}.game-surface{position:relative;width:100%}canvas{display:block;width:100%;aspect-ratio:900/710;touch-action:none}.lab-head{position:absolute;top:17px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;pointer-events:none;z-index:1}.tag{padding:9px 11px;border:1px solid #e0e5d6;background:#ffffffb3;border-radius:20px;font-size:9px;letter-spacing:1px}.phase-label{font-size:10px;display:flex;align-items:center;gap:7px}.phase-label i{width:6px;height:6px;border-radius:50%;background:#849c54}.overlay{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:#eff3e24d;backdrop-filter:blur(3px);padding:16px}.overlay.hidden{display:none}.welcome{max-width:360px;width:100%;padding:30px 24px;border:1px solid white;border-radius:26px;background:#fffffff5;text-align:center;box-shadow:0 20px 70px #40562c14}.symbol{font-size:38px}.welcome .eyebrow{margin-top:13px;font-size:9px}.welcome h2{font-size:26px;letter-spacing:-1px;margin:12px 0}.welcome p{font-size:12px;color:var(--muted);line-height:1.9;margin:15px 0 20px}.primary{border:0;border-radius:13px;background:var(--ink);color:var(--lime);font-weight:700;padding:15px 26px;min-height:44px}.primary:hover{background:#3a5544}.side{display:flex;flex-direction:column;gap:13px}.score-card{padding:22px;border-radius:22px;background:var(--ink);color:#fff}.card-heading{font-size:10px;letter-spacing:1.5px;display:flex;justify-content:space-between}.score{font-size:59px;line-height:1.1;letter-spacing:-3px;color:#e1f697;margin:13px 0 7px;font-variant-numeric:tabular-nums}.score b{font-weight:600}.score>span{font-size:11px;letter-spacing:0;margin-left:8px;color:#a9baa0}#combo{font-size:10px;color:#bacda7;min-height:15px}.stats{display:flex;justify-content:space-between;border-top:1px solid #ffffff20;padding-top:16px;margin-top:17px;font-size:9px;color:#b1bfa8}.stats strong{display:block;font-size:18px;color:#f2f6e9;margin-top:6px}.score-detail{font-size:9px;color:#b1bfa8;margin-top:14px}.next-card{border:1px solid #dce2d4;background:#eaf0db;border-radius:19px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between}.next-card .eyebrow{font-size:9px;color:#899578}.next-name{font-size:17px;font-weight:700;margin:5px 0}.next-card small{font-size:10px;color:var(--muted)}#afterNext{font-size:17px;margin-left:6px}#nextFruit{font-size:43px}#chainBadge{display:none}.mission{font-size:11px;color:#7b896c;padding:4px 3px;display:flex;justify-content:space-between;gap:10px}.mission span:last-child{font-size:9px;color:#93a183}.toolbox{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tool{position:relative;border:1px solid #d5dfc7;border-radius:13px;background:#fffefa;padding:13px 8px;min-height:65px;overflow:hidden;font-size:13px;font-weight:700;user-select:none;-webkit-user-select:none}.tool small{display:block;font-size:9px;font-weight:400;margin-top:5px;color:#8a957c}.tool .icon{font-size:16px;margin-right:4px}.liquid-tool{background:#ddecaa;touch-action:none}.liquid-tool.active{background:#facb8e}.drop-tool{background:var(--ink);color:#e1f697;border-color:var(--ink)}.drop-tool small{color:#afbf99}.meter{position:absolute;bottom:0;left:0;width:100%;height:4px;background:#c6d99b}.meter>div{height:100%;background:#74964b;width:100%;transition:width .1s linear}.bottom-controls{display:grid;grid-template-columns:1fr 1fr;gap:7px}.secondary{min-height:40px;padding:9px 7px;border:1px solid #d9dfd0;border-radius:10px;font-size:10px;background:transparent}.note{font-size:10px;line-height:1.8;color:var(--muted);margin:0 3px}.instructions{border:1px solid #dce2d4;border-radius:20px;background:#fffefa;padding:22px;margin-top:20px;scroll-margin:20px}.instructions h3{font-size:14px;margin:0 0 14px}.guide-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.step b{font-size:12px}.step p{font-size:11px;line-height:1.85;color:var(--muted);margin:6px 0}.evolution-card{border:1px solid #dce2d4;border-radius:21px;background:#fffefa;margin-top:22px;padding:19px 22px}.evolution-heading{display:flex;align-items:center;justify-content:space-between;font-size:12px}.evolution-heading span{font-size:10px;color:var(--muted)}.evolution{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:16px}.evolution-item{position:relative;text-align:center;padding:9px 2px;border-radius:12px;opacity:.5}.evolution-item.discovered{opacity:1}.evolution-item.latest{background:#edf4d7}.fruit-icon{display:block;font-size:29px;margin-bottom:6px}.evolution-item b{display:block;font-size:11px}.evolution-item small{display:block;font-size:9px;color:var(--muted);margin-top:5px}.evo-arrow{position:absolute;right:-7px;top:25px;color:#a8b197;font-size:18px}.footer{display:flex;justify-content:space-between;margin-top:20px;color:#8b9681;font-size:9px;letter-spacing:1px}.hot{color:#c48041!important}.touch-tip{display:none}
+@media(max-width:1050px){header{padding:0 22px}main{padding:23px 22px}.layout{grid-template-columns:minmax(0,1fr) 250px;gap:17px}h1{font-size:33px}.intro p{font-size:11px;max-width:230px}.score-card{padding:19px}.phase-label{font-size:9px}.tag{font-size:8px}.lab-head{left:14px;right:14px}.guide-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){header{height:46px;padding:0 13px}.brand{font-size:14px;gap:7px}.brand small{font-size:9px}.mark{width:26px;height:26px;font-size:20px;border-radius:8px}.header-right{font-size:8px;letter-spacing:0}.intro{display:none}main{padding:9px 11px calc(100px + env(safe-area-inset-bottom))}.layout{display:flex;flex-direction:column;gap:8px}.side{display:contents}.score-card{order:-3;position:relative;width:100%;display:flex;align-items:center;gap:14px;padding:10px 13px;border-radius:16px;min-height:62px}.score{font-size:32px;letter-spacing:-1px;margin:0;white-space:nowrap}.score>span{font-size:8px;margin-left:4px}.card-heading,#combo,.score-detail{display:none}.stats{margin:0 0 0 auto;padding:0;border:0;gap:15px;font-size:8px}.stats strong{font-size:13px;margin-top:4px}.next-card{order:-2;width:100%;padding:6px 12px;min-height:42px;border-radius:12px;gap:8px}.next-card>div{display:flex;align-items:center;gap:8px}.next-card .eyebrow{font-size:8px;letter-spacing:0}.next-name{font-size:12px;margin:0}.next-card small{font-size:8px}#afterNext{font-size:14px;margin-left:4px}#nextFruit{font-size:23px;order:-1}#chainBadge{display:block;margin-left:auto;font-size:9px;white-space:nowrap}.lab{order:0;position:relative;top:0;width:100%;border-radius:17px;background:#edf1e4}.game-surface{width:min(100%,calc((100svh - 332px - env(safe-area-inset-bottom))*.984375));min-width:140px;margin:0 auto}canvas{aspect-ratio:630/640}.lab-head{display:none}.welcome{padding:18px 14px;max-width:285px;border-radius:20px}.symbol,.welcome .eyebrow{display:none}.welcome h2{font-size:22px;margin:3px 0 10px}.welcome p{font-size:11px;line-height:1.7;margin:9px 0 13px}.primary{padding:12px 22px;font-size:12px}.mission{order:1;width:100%;font-size:10px;padding:1px 4px}.mission span:last-child{font-size:8px}.bottom-controls{order:2;grid-template-columns:repeat(4,1fr);width:100%;gap:6px}.secondary{min-height:36px;font-size:9px;padding:7px 4px}.toolbox{position:fixed;z-index:5;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:9px 11px calc(9px + env(safe-area-inset-bottom));background:#f5f5edf5;border-top:1px solid #dce2d4;backdrop-filter:blur(14px)}.tool{min-height:60px;padding:10px 3px;font-size:11px;border-radius:12px}.tool small{font-size:8px;margin-top:5px}.tool .icon{font-size:13px;margin-right:2px}.swap-tool{order:0}.shake-tool{order:1}.liquid-tool{order:2}.drop-tool{order:3}.note{display:none}.instructions{padding:18px;margin-top:14px}.guide-grid{gap:14px}.step p{font-size:10px}.evolution-card{margin-top:15px;padding:14px 10px}.evolution-heading{font-size:11px}.evolution-heading span{font-size:8px}.evolution{display:flex;overflow-x:auto;gap:8px;padding-bottom:6px;scroll-snap-type:x proximity}.evolution-item{flex:0 0 55px;scroll-snap-align:start}.fruit-icon{font-size:24px}.evo-arrow{right:-8px}.footer{font-size:7px;letter-spacing:0;gap:10px}.touch-tip{display:block;font-size:9px;text-align:center;color:var(--muted);padding:0 0 8px}.lab .touch-tip{display:none}}
+@media(max-width:360px){.stats{gap:10px}.stats strong{font-size:12px}.score-card{gap:8px}.next-card>div{gap:5px}#chainBadge{font-size:8px}.game-surface{width:min(100%,calc((100svh - 332px - env(safe-area-inset-bottom))*.984375))}.mission span:last-child{display:none}.welcome h2{font-size:20px}.tool .icon{display:none}}
+@media(max-height:520px) and (orientation:landscape){header{height:38px}.intro,.evolution-card,.footer,.mission,.note{display:none}main{padding:8px 16px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:12px}.side{display:flex;gap:7px}.lab{position:relative;top:0;order:0}.game-surface{width:auto;max-width:100%;height:calc(100svh - 65px);aspect-ratio:630/640;margin:auto}canvas{width:100%;height:100%;aspect-ratio:630/640}.lab-head{display:none}.score-card{display:block;padding:10px 13px;min-height:0;border-radius:12px}.card-heading,#combo,.score-detail{display:none}.score{font-size:29px;margin:0}.stats{margin-top:5px;padding:5px 0 0;gap:10px;font-size:8px}.stats strong{font-size:12px;margin-top:3px}.next-card{padding:5px 10px;min-height:35px;border-radius:10px}.next-name{font-size:12px;margin:2px 0}.next-card .eyebrow{display:none}#nextFruit{font-size:25px}.toolbox{position:static;padding:0;border:0;background:transparent;grid-template-columns:1fr 1fr;gap:6px}.tool{min-height:45px;padding:7px;font-size:11px}.tool small{font-size:8px;margin-top:3px}.bottom-controls{grid-template-columns:repeat(4,1fr);gap:4px}.secondary{font-size:8px;padding:5px 2px;min-height:32px}.welcome{max-width:300px;padding:18px}.symbol,.welcome .eyebrow{display:none}.welcome h2{font-size:20px}.welcome p{font-size:11px}.instructions{margin-top:10px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style></head><body>
+<header><div class="brand"><span class="mark">◒</span> FRUIT FLOW <small>/ 果流</small></div><span class="header-right">SOFT FRUIT. SWEET COMBOS.</span></header>
+<main><div class="intro"><div><div class="eyebrow" style="color:#879371">EXPERIMENT 003 — CHAIN REACTION</div><h1>再碰一下，惊喜连锁<span style="color:#94b657">。</span></h1></div><p>瞄准、换果、轻轻一晃。<br>把每一次软乎乎的碰撞，变成下一场进化。</p></div>
+<div class="layout"><section class="lab"><div class="game-surface"><div class="lab-head"><div class="tag">MERGE & GROW · 半流体进化</div><div class="phase-label"><i id="phaseDot"></i><span id="phaseText">半流体 · 柔软挤压融合</span></div></div><canvas id="game" width="900" height="710" tabindex="0" aria-label="水果游戏：移动瞄准，点击或触屏松手投放；方向键瞄准，回车投放，X 换果，S 晃动，空格液化"></canvas><div class="overlay" id="overlay"><div class="welcome"><span class="symbol">🍒</span><div class="eyebrow" id="overlayTag">A LITTLE SHAKE. A BIG SURPRISE.</div><h2 id="overlayTitle">让快乐，连锁发生。</h2><p id="overlayBody">移动瞄准，点击或松手投下水果。<br>相同水果合成，连续进化还有加分！<br>默认就是半流体，落下摊软、挤压融合。</p><button class="primary" id="start">开始装一罐 ↗</button></div></div></div></section>
+<aside class="side"><div class="score-card"><div class="card-heading"><span>进化累计 / SCORE</span><span>✦</span></div><div class="score"><b id="score">0</b><span>pts</span></div><div id="combo">连续合成，解锁额外奖励</div><div class="stats"><div>最高进化<strong id="highest">樱桃</strong></div><div>合成次数<strong id="collected">00</strong></div><div>最佳成绩<strong id="best">0</strong></div></div><div class="score-detail">进化 <span id="baseScore">0</span> &nbsp; + &nbsp; 连锁奖励 <span id="bonusScore">0</span></div></div>
+<div class="next-card"><span id="nextFruit">🍒</span><div><span class="eyebrow">待投</span><div class="next-name" id="nextName">樱桃</div><small>随后 <span id="afterNext">🍒 🍓</span></small></div><span id="chainBadge">合并 · 进化</span></div>
+<div class="mission"><span id="goal">下一目标 🍊 甜橙</span><span>不限时 · 装满结算</span></div>
+<div class="toolbox" aria-label="游戏操作"><button class="tool swap-tool" id="swap"><span class="icon">⇄</span>换一颗<small id="swapCount">3 / 3 次</small></button><button class="tool shake-tool" id="shake"><span class="icon">≈</span>晃一晃<small id="shakeStatus">消耗 40 能量</small></button><button class="tool liquid-tool" id="liquid"><span class="icon">◒</span>按住液化<small>能量 <span id="energyValue">100%</span></small><div class="meter"><div id="energy"></div></div></button><button class="tool drop-tool" id="drop"><span class="icon">↓</span>投下水果<small>瞄准后轻点</small></button></div>
+<div class="bottom-controls"><button class="secondary" id="pause">Ⅱ 暂停</button><button class="secondary" id="restart">↻ 重开</button><button class="secondary" id="sound" aria-pressed="false">♪ 音效关</button><button class="secondary" id="help" aria-expanded="false" aria-controls="guide">? 玩法</button></div><p class="note">2.8 秒内接着合成可叠加连锁，奖励最高 +100%。换果每罐 3 次，每合成 8 次补充 1 次。晃动和液化共用能量。</p></aside></div>
+<section class="instructions" id="guide" hidden><h3>一点策略，更多惊喜。</h3><div class="guide-grid"><div class="step"><b>01 · 投放与连锁</b><p>移动鼠标点击投放；手机拖动后松手投放。2.8 秒内接着合成，每多一次奖励增加 25%，最高 +100%。落点圆圈帮助预判。</p></div><div class="step"><b>02 · 换一颗</b><p>待投水果换成另一种初级水果，每罐 3 次。每合成 8 次补充 1 次，上限 3 次。键盘快捷键 X。</p></div><div class="step"><b>03 · 晃动与液化</b><p>晃罐消耗 40 能量、冷却 8 秒，帮助被卡住的水果重新碰面。水果默认保持半流体。按住空格或液化按钮进一步降低张力、更容易摊开；松开仍保留柔软形变。</p></div><div class="step"><b>04 · 一直装到满</b><p>没有倒计时。落稳的水果越过满载线持续 2 秒后结算。方向键瞄准，回车投放，S 晃罐，P 暂停。西瓜为最终形态。</p></div></div></section>
+<section class="evolution-card"><div class="evolution-heading"><b>水果进化图谱</b><span>同类 × 2 → 下一级 · 分数逐次累计</span></div><div class="evolution" id="evolution"></div></section><div class="footer"><span>PLAY WITH YOUR FOOD. © FRUIT FLOW LAB</span><span>EVERY EVOLUTION COUNTS.</span></div></main>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d');
+const W=900,H=710,TAU=Math.PI*2,LEFT=160,RIGHT=740,FLOOR=668,LIMIT=190;
+// Evolution points always accumulate; fast successive merges add a separate chain bonus.
+const tiers=[
+ {name:'樱桃',emoji:'🍒',r:21,fill:'#e78699',dark:'#b95371',light:'#ffc6d1',points:0},
+ {name:'草莓',emoji:'🍓',r:28,fill:'#f18d84',dark:'#c95359',light:'#ffd0bd',points:10},
+ {name:'葡萄',emoji:'🍇',r:36,fill:'#b69bd7',dark:'#8261a7',light:'#e2d0f7',points:25},
+ {name:'柠檬',emoji:'🍋',r:45,fill:'#ecd56c',dark:'#b29837',light:'#fff2ae',points:50},
+ {name:'甜橙',emoji:'🍊',r:55,fill:'#ffae57',dark:'#cd7a32',light:'#ffe0a0',points:90},
+ {name:'苹果',emoji:'🍎',r:67,fill:'#e78276',dark:'#b7574e',light:'#ffbeb1',points:150},
+ {name:'香梨',emoji:'🍐',r:80,fill:'#b7ce69',dark:'#7c983c',light:'#e6efab',points:240},
+ {name:'蜜桃',emoji:'🍑',r:95,fill:'#efb0ac',dark:'#c38088',light:'#ffe3cb',points:360},
+ {name:'菠萝',emoji:'🍍',r:112,fill:'#dec166',dark:'#a28a38',light:'#f7e7a7',points:520},
+ {name:'西瓜',emoji:'🍉',r:131,fill:'#85ba86',dark:'#4b865d',light:'#c4e3a1',points:800}
+];
+let fusions=[];
+let fruits=[],particles=[],popups=[],mode='ready',score=0,merges=0,highest=0,counts=Array(10).fill(0);
+let baseScore=0,bonusScore=0,chain=0,bestChain=0,chainUntil=0,swaps=3,shakeCooldown=0,shakeTime=0,bannerTime=0,soundOn=false,audioCtx=null;
+let view={x:0,y:0,w:900,h:710};
+let next=[],aimX=450,dropCooldown=0,overflow=0,energy=100,liquidHeld=false,liquid=false,depleted=false,elapsed=0,best=0,uid=0,activePointer=null;
+const keys=new Set();
+try{best=Math.max(0,Number(localStorage.getItem('fruit-flow-evolution-best'))||0)}catch{}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const randomTier=()=>{const n=Math.random();return n<.42?0:n<.73?1:n<.92?2:3};
+function makeFruit(x,y,tier,vx=0,vy=0){const r=tiers[tier].r;return {id:uid++,tier,r,x,y,vx,vy,age:0,squash:0,squashV:0,supported:false,load:0,phase:Math.random()*TAU,rotation:(Math.random()-.5)*.22,outline:Array.from({length:32},()=>({r,v:0})),contacts:[]}}
+// Deformation changes the collider itself. Horizontal spreading preserves ellipse area.
+function extent(f,nx,ny){const sy=1-(f.squash||0),sx=1/sy;return f.r/Math.sqrt(nx*nx/(sx*sx)+ny*ny/(sy*sy))}
+function radius(f){return extent(f,0,1)}
+function touching(a,b,padding=1.5){const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.001;return d<=extent(a,dx/d,dy/d)+extent(b,dx/d,dy/d)+padding}
+
+function saveBest(){if(score>best){best=score;try{localStorage.setItem('fruit-flow-evolution-best',best)}catch{}}}
+function sound(kind,tier=0){
+ if(!soundOn)return;
+ try{const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;if(!audioCtx)audioCtx=new Audio();if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});const at=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);osc.type='sine';const frequency=kind==='merge'?300*Math.pow(1.122,tier+Math.min(chain,5)):kind==='shake'?115:220;osc.frequency.setValueAtTime(frequency,at);osc.frequency.exponentialRampToValueAtTime(kind==='drop'?100:frequency*1.4,at+.12);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.055,at+.012);gain.gain.exponentialRampToValueAtTime(.0001,at+.22);osc.start(at);osc.stop(at+.23)}catch{}
+}
+function swapFruit(){
+ if(mode!=='playing'||swaps<1||dropCooldown>0)return false;
+ const options=[0,1,2,3].filter(t=>t!==next[0]);next[0]=options[Math.floor(Math.random()*options.length)];swaps--;sound('drop');updateUI();return true;
+}
+function shake(){
+ if(mode!=='playing'||shakeCooldown>0||energy<40||!fruits.length)return false;
+ energy-=40;shakeCooldown=8;shakeTime=.48;
+ for(const f of fruits){f.vx+=(f.x<450?1:-1)*(85+Math.random()*70);f.vy-=65+Math.random()*55;f.squashV+=.65}
+ sound('shake');return true;
+}
+function updateUI(){
+ $('score').textContent=score;$('collected').textContent=String(merges).padStart(2,'0');$('highest').textContent=tiers[highest].name;$('best').textContent=best;
+ $('combo').textContent=chain>1?'连锁 '+chain+' 次 · 奖励已累计 +'+bonusScore+' 分':merges?'进化 '+baseScore+' + 连锁奖励 '+bonusScore:'连续合成，解锁额外奖励';
+ $('swapCount').textContent=swaps+' / 3 次';$('baseScore').textContent=baseScore;$('bonusScore').textContent=bonusScore;
+ const goal=[4,6,9].find(t=>highest<t);$('goal').textContent=goal===undefined?'已达成终极西瓜！':'下一目标 '+tiers[goal].emoji+' '+tiers[goal].name;
+ $('nextFruit').textContent=tiers[next[0]??0].emoji;$('nextName').textContent=tiers[next[0]??0].name;
+ $('afterNext').textContent=next.slice(1).map(t=>tiers[t].emoji).join('  ');
+ for(let i=0;i<tiers.length;i++){const el=$('tier-'+i);el.classList.toggle('discovered',i<=highest);el.classList.toggle('latest',i===highest);$('count-'+i).textContent=i===0?'起始':counts[i]?'已合成 '+counts[i]+' 次':'+'+tiers[i].points+' 分'}
+}
+function reset(){fusions=[];fruits=[];particles=[];popups=[];score=0;baseScore=0;bonusScore=0;chain=0;bestChain=0;chainUntil=0;swaps=3;shakeCooldown=0;shakeTime=0;bannerTime=0;merges=0;highest=0;counts=Array(10).fill(0);next=[0,0,randomTier()];aimX=450;dropCooldown=0;overflow=0;energy=100;elapsed=0;liquidHeld=false;liquid=false;depleted=false;activePointer=null;keys.clear();mode='playing';$('overlay').classList.add('hidden');$('pause').textContent='Ⅱ 暂停';updateUI()}
+function drop(){if(mode!=='playing'||dropCooldown>0)return false;const tier=next.shift(),r=tiers[tier].r;fruits.push(makeFruit(clamp(aimX,LEFT+r+3,RIGHT-r-3),118,tier,0,40));next.push(randomTier());dropCooldown=.48;sound('drop');updateUI();return true}
+function end(){mode='ended';liquidHeld=false;liquid=false;activePointer=null;keys.clear();saveBest();$('overlayTag').textContent='EVOLUTION COMPLETE';$('overlayTitle').textContent='这一罐，进化了 '+score+' 分';$('overlayBody').innerHTML='水果已持续越过满载线。<br>完成 '+merges+' 次合成，最高进化到'+tiers[highest].emoji+tiers[highest].name+'。<br>进化 '+baseScore+' 分 + 连锁奖励 '+bonusScore+' 分。<br>本罐最高连锁 '+bestChain+' 次。';$('start').textContent='再装一罐 ↗';$('overlay').classList.remove('hidden');updateUI()}
+function togglePause(){if(mode==='playing'){mode='paused';liquidHeld=false;liquid=false;activePointer=null;keys.clear();$('pause').textContent='▶ 继续'}else if(mode==='paused'){mode='playing';$('pause').textContent='Ⅱ 暂停'}}
+function mergePairs(){
+ const consumed=new Set(),born=[];
+ for(let i=0;i<fruits.length;i++){const a=fruits[i];if(consumed.has(a.id)||a.age<.18||a.tier===tiers.length-1)continue;
+  for(let j=i+1;j<fruits.length;j++){const b=fruits[j];if(consumed.has(b.id)||b.age<.18||a.tier!==b.tier)continue;
+   if(!touching(a,b))continue;
+   consumed.add(a.id);consumed.add(b.id);const tier=a.tier+1,r=tiers[tier].r,x=clamp((a.x+b.x)/2,LEFT+r,RIGHT-r),y=Math.min(FLOOR-r,(a.y+b.y)/2);
+   const f=makeFruit(x,y,tier,(a.vx+b.vx)*.35,Math.min(0,(a.vy+b.vy)*.25)-35);f.squash=.16;f.squashV=1.3;
+   const angle=Math.atan2(b.y-a.y,b.x-a.x);for(let k=0;k<32;k++)f.outline[k].r=f.r*(1+.26*Math.cos(2*(k/32*TAU-angle)));
+   fusions.push({ax:a.x,ay:a.y,bx:b.x,by:b.y,x,y,ra:a.r,rb:b.r,tier,life:.55});born.push(f);
+   chain=elapsed<=chainUntil&&chain>0?chain+1:1;chainUntil=elapsed+2.8;bestChain=Math.max(bestChain,chain);
+   const bonus=Math.floor(tiers[tier].points*.25*Math.min(chain-1,4));baseScore+=tiers[tier].points;bonusScore+=bonus;score=baseScore+bonusScore;merges++;counts[tier]++;highest=Math.max(highest,tier);
+   if(merges%8===0)swaps=Math.min(3,swaps+1);energy=Math.min(100,energy+5);if(chain>1)bannerTime=1.5;
+   popups.push({x,y:y-r,text:tiers[tier].name+' +'+tiers[tier].points+(bonus?' · 奖励 +'+bonus:''),life:1.25});sound('merge',tier);
+   for(let k=0;k<16;k++){const angle=Math.random()*TAU,speed=40+Math.random()*100;particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:.5+Math.random()*.4,color:tiers[tier].fill,r:2+Math.random()*4})}
+   break;
+  }
+ }
+ if(born.length){fruits=fruits.filter(f=>!consumed.has(f.id)).concat(born);saveBest();updateUI()}
+}
+function physics(dt){
+ elapsed+=dt;dropCooldown=Math.max(0,dropCooldown-dt);shakeCooldown=Math.max(0,shakeCooldown-dt);shakeTime=Math.max(0,shakeTime-dt);bannerTime=Math.max(0,bannerTime-dt);
+ if(chain&&elapsed>chainUntil){chain=0;updateUI()}
+ if(keys.has('ArrowLeft'))aimX-=320*dt;if(keys.has('ArrowRight'))aimX+=320*dt;aimX=clamp(aimX,LEFT+28,RIGHT-28);
+ if(!liquidHeld)depleted=false;liquid=liquidHeld&&!depleted&&energy>0;energy=clamp(energy+(liquid?-27:16)*dt,0,100);if(energy===0)depleted=true;
+ for(const f of fruits){
+  f.age+=dt;const target=f.supported?(liquid?.34:.19)+Math.min(.09,f.load*.035):-Math.min(.12,Math.abs(f.vy)/3600);
+  f.squashV+=((target-f.squash)*(liquid?30:46)-f.squashV*(liquid?6:7))*dt;f.squash=clamp(f.squash+f.squashV*dt,-.16,.43);
+  f.contacts=[];f.supported=false;f.load=0;f.vx*=.995;f.vy=Math.min(570,f.vy+670*dt);f.x+=f.vx*dt;f.y+=f.vy*dt;
+ }
+ mergePairs();
+ // Dynamic, area-preserving colliders spread under weight; surface nodes retain viscous motion.
+ for(let iteration=0;iteration<9;iteration++){
+  for(const f of fruits){const rx=extent(f,1,0),ry=extent(f,0,1);if(f.x<LEFT+rx){f.x=LEFT+rx;if(f.vx<0)f.vx*=-.06}if(f.x>RIGHT-rx){f.x=RIGHT-rx;if(f.vx>0)f.vx*=-.06}if(f.y>=FLOOR-ry-.3){f.supported=true;f.y=Math.min(f.y,FLOOR-ry);if(f.vy>0){if(f.vy>100)f.squashV+=Math.min(2.8,f.vy*.006);f.vy=0}f.vx*=.95}}
+  for(let i=0;i<fruits.length;i++)for(let j=i+1;j<fruits.length;j++){
+   const a=fruits[i],b=fruits[j];let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy);if(d<.001){dx=.01;dy=.001;d=Math.hypot(dx,dy)}const nx=dx/d,ny=dy/d,min=extent(a,nx,ny)+extent(b,nx,ny);if(d>=min)continue;const ia=1/(a.r*a.r),ib=1/(b.r*b.r),sum=ia+ib,overlap=min-d;
+   a.x-=nx*overlap*ia/sum*.85;a.y-=ny*overlap*ia/sum*.85;b.x+=nx*overlap*ib/sum*.85;b.y+=ny*overlap*ib/sum*.85;
+   const relative=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(relative<0){const impulse=-relative/sum;a.vx-=impulse*ia*nx;a.vy-=impulse*ia*ny;b.vx+=impulse*ib*nx;b.vy+=impulse*ib*ny;if(iteration===0&&relative< -80){a.squashV+=Math.min(1.7,-relative*.004);b.squashV+=Math.min(1.7,-relative*.004)}}
+   const tangent=(b.vx-a.vx)*(-ny)+(b.vy-a.vy)*nx,friction=tangent*.035/sum;a.vx+=friction*ia*(-ny);a.vy+=friction*ia*nx;b.vx-=friction*ib*(-ny);b.vy-=friction*ib*nx;
+  }
+ }
+ for(const f of fruits){const rx=extent(f,1,0),ry=extent(f,0,1);f.x=clamp(f.x,LEFT+rx,RIGHT-rx);f.y=Math.min(f.y,FLOOR-ry);f.vx=clamp(f.vx,-450,450);f.vy=clamp(f.vy,-450,570);f.contacts.push({nx:-1,ny:0,d:f.x-LEFT},{nx:1,ny:0,d:RIGHT-f.x},{nx:0,ny:1,d:FLOOR-f.y})}
+ for(let i=0;i<fruits.length;i++)for(let j=i+1;j<fruits.length;j++){
+  const a=fruits[i],b=fruits[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1,nx=dx/d,ny=dy/d,ra=extent(a,nx,ny),rb=extent(b,nx,ny);
+  if(d<ra+rb+5){a.contacts.push({nx,ny,d:d*ra/(ra+rb)});b.contacts.push({nx:-nx,ny:-ny,d:d*rb/(ra+rb)});
+   if(ny>.28){a.supported=true;b.load+=a.r*a.r/(b.r*b.r)*ny}if(ny<-.28){b.supported=true;a.load+=b.r*b.r/(a.r*a.r)*(-ny)}
+  }
+ }
+ for(const f of fruits){
+  const targets=[],caps=[];const motion=Math.min(1,Math.hypot(f.vx,f.vy)/250+Math.abs(f.squashV)*.35);
+  for(let i=0;i<32;i++){
+   const angle=i/32*TAU,nx=Math.cos(angle),ny=Math.sin(angle);let cap=f.r*1.85;
+   for(const c of f.contacts){const dot=nx*c.nx+ny*c.ny;if(dot>0)cap=Math.min(cap,Math.max(.5,c.d)/dot)}
+   caps.push(cap);const ripple=(.012+motion*.035)*Math.sin(angle*3+elapsed*6+f.phase)+motion*.025*Math.sin(angle*5-elapsed*9);
+   targets.push(Math.min(cap,extent(f,nx,ny)*(1+ripple)));
+  }
+  // Lost area at contact faces bulges into free space, instead of disappearing.
+  const desiredArea=Math.PI*f.r*f.r;
+  for(let pass=0;pass<3;pass++){let area=0;for(let i=0;i<32;i++)area+=targets[i]*targets[(i+1)%32]*Math.sin(TAU/32)*.5;const correction=Math.sqrt(desiredArea/Math.max(area,1));for(let i=0;i<32;i++)targets[i]=Math.min(caps[i],targets[i]*clamp(correction,.94,1.09))}
+  for(let i=0;i<32;i++){const p=f.outline[i],neighbors=(f.outline[(i+31)%32].r+f.outline[(i+1)%32].r)*.5;
+   p.v+=((targets[i]-p.r)*(liquid?50:88)+(neighbors-p.r)*9-p.v*(liquid?6:8))*dt;p.r=clamp(p.r+p.v*dt,f.r*.4,f.r*1.85);
+   // Containment is exact even during the wet recoil after a heavy landing.
+   if(p.r>caps[i]){p.r=Math.max(.5,caps[i]);p.v=Math.min(0,p.v)}
+  }
+ }
+ for(const f of fusions)f.life-=dt;fusions=fusions.filter(f=>f.life>0);
+ const crowded=fruits.some(f=>f.age>1.5&&f.y-radius(f)<LIMIT);overflow=crowded?Math.min(2,overflow+dt):0;
+ if(overflow>=2){end();return}
+ for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=190*dt}particles=particles.filter(p=>p.life>0);
+ for(const p of popups){p.life-=dt;p.y-=28*dt}popups=popups.filter(p=>p.life>0);
+}
+function rounded(x,y,w,h,r,fill){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill()}
+function label(text,x,y,size=12,color='#8a987a',align='center'){ctx.font=`${size}px Arial,"PingFang SC",sans-serif`;ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(text,x,y)}
+function fruitPath(f){
+ const points=f.outline.map((p,i)=>({x:f.x+Math.cos(i/32*TAU)*p.r,y:f.y+Math.sin(i/32*TAU)*p.r}));
+ ctx.beginPath();ctx.moveTo((points[31].x+points[0].x)/2,(points[31].y+points[0].y)/2);
+ for(let i=0;i<32;i++){const p=points[i],q=points[(i+1)%32];ctx.quadraticCurveTo(p.x,p.y,(p.x+q.x)/2,(p.y+q.y)/2)}ctx.closePath();
+}
+function drawFusion(f){
+ const progress=1-f.life/.55,ease=1-Math.pow(1-progress,3),ax=f.ax+(f.x-f.ax)*ease,ay=f.ay+(f.y-f.ay)*ease,bx=f.bx+(f.x-f.bx)*ease,by=f.by+(f.y-f.by)*ease,angle=Math.atan2(by-ay,bx-ax),nx=-Math.sin(angle),ny=Math.cos(angle),r=Math.min(f.ra,f.rb)*(1-progress*.6);
+ ctx.save();ctx.globalAlpha=(1-progress)*.8;ctx.fillStyle=tiers[f.tier].fill;
+ ctx.beginPath();ctx.moveTo(ax+nx*r,ay+ny*r);ctx.bezierCurveTo(f.x+nx*r*.3,f.y+ny*r*.3,f.x+nx*r*.3,f.y+ny*r*.3,bx+nx*r,by+ny*r);ctx.lineTo(bx-nx*r,by-ny*r);ctx.bezierCurveTo(f.x-nx*r*.3,f.y-ny*r*.3,f.x-nx*r*.3,f.y-ny*r*.3,ax-nx*r,ay-ny*r);ctx.closePath();ctx.fill();
+ for(const [x,y,rr] of [[ax,ay,f.ra],[bx,by,f.rb]]){ctx.beginPath();ctx.arc(x,y,rr*(1-progress*.6),0,TAU);ctx.fill()}ctx.restore();
+}
+function drawFruit(f,ghost=false){
+ const t=tiers[f.tier],sy=1-(f.squash||0),sx=1/sy;
+ ctx.save();ctx.globalAlpha*=ghost?.62:Math.min(1,.35+(f.age??2)*2.5);ctx.shadowColor=t.dark+'28';ctx.shadowBlur=14;ctx.shadowOffsetY=6;fruitPath(f);
+ const gradient=ctx.createLinearGradient(f.x-f.r*sx,f.y-f.r*sy,f.x+f.r*sx,f.y+f.r*sy);gradient.addColorStop(0,t.light);gradient.addColorStop(.42,t.fill);gradient.addColorStop(1,t.dark+'dc');ctx.fillStyle=gradient;ctx.fill();ctx.shadowColor='transparent';ctx.strokeStyle=t.dark+'55';ctx.lineWidth=1.25;ctx.stroke();
+ ctx.save();ctx.clip();ctx.translate(f.x,f.y);ctx.scale(sx,sy);
+ // Fruit markings are carried by the soft surface, rather than a rigid emoji sticker.
+ if(f.tier===1||f.tier===7){ctx.fillStyle=f.tier===1?'#fff0b894':'#f5dcd180';for(let k=0;k<12;k++){const a=k*2.4,rr=f.r*(.38+(k%3)*.16);ctx.beginPath();ctx.ellipse(Math.cos(a)*rr,Math.sin(a)*rr,1.3+f.r*.014,2.3+f.r*.02,a,0,TAU);ctx.fill()}}
+ if(f.tier===3||f.tier===4){ctx.strokeStyle='#fff2c566';ctx.lineWidth=Math.max(1,f.r*.035);for(let k=0;k<8;k++){const a=k/8*TAU;ctx.beginPath();ctx.moveTo(Math.cos(a)*f.r*.35,Math.sin(a)*f.r*.35);ctx.lineTo(Math.cos(a)*f.r*.83,Math.sin(a)*f.r*.83);ctx.stroke()}ctx.beginPath();ctx.arc(0,0,f.r*.84,0,TAU);ctx.stroke()}
+ if(f.tier===2){for(let k=0;k<7;k++){const a=k/7*TAU;ctx.beginPath();ctx.arc(Math.cos(a)*f.r*.6,Math.sin(a)*f.r*.6,f.r*.21,0,TAU);ctx.fillStyle='#e5c6ff30';ctx.fill();ctx.strokeStyle='#ffffff20';ctx.lineWidth=1;ctx.stroke()}}
+ if(f.tier===8){ctx.strokeStyle='#f9e9a866';ctx.lineWidth=2;for(let k=-3;k<=3;k++){ctx.beginPath();ctx.moveTo(-f.r,k*f.r*.4-f.r);ctx.lineTo(f.r,k*f.r*.4+f.r);ctx.moveTo(-f.r,k*f.r*.4+f.r);ctx.lineTo(f.r,k*f.r*.4-f.r);ctx.stroke()}}
+ if(f.tier===9){ctx.strokeStyle='#387b555c';ctx.lineWidth=f.r*.09;for(let k=-2;k<=2;k++){ctx.beginPath();ctx.ellipse(k*f.r*.39,0,f.r*.19,f.r*1.1,0,0,TAU);ctx.stroke()}}
+ ctx.beginPath();ctx.ellipse(-f.r*.29,-f.r*.48,f.r*.37,f.r*.12,-.22,0,TAU);ctx.fillStyle='#ffffff95';ctx.fill();ctx.beginPath();ctx.ellipse(-f.r*.54,-f.r*.24,f.r*.09,f.r*.055,-.55,0,TAU);ctx.fillStyle='#ffffffb0';ctx.fill();
+ ctx.beginPath();ctx.ellipse(f.r*.05,f.r*.62,f.r*.5,f.r*.075,0,0,TAU);ctx.fillStyle=t.light+'65';ctx.fill();
+ // A little face follows the viscous squash; leaves follow the moving upper skin.
+ ctx.fillStyle='#354431';const eye=f.r*.16;for(const x of [-eye,eye]){ctx.beginPath();ctx.ellipse(x,f.r*.05,Math.max(1.5,f.r*.035),Math.max(2.5,f.r*.055),0,0,TAU);ctx.fill()}
+ ctx.beginPath();ctx.arc(0,f.r*.15,Math.max(2.3,f.r*.075),0,Math.PI);ctx.strokeStyle='#455239';ctx.lineWidth=Math.max(1.2,f.r*.025);ctx.stroke();ctx.fillStyle='#f7bbb860';for(const x of [-f.r*.29,f.r*.29]){ctx.beginPath();ctx.ellipse(x,f.r*.17,f.r*.105,f.r*.055,0,0,TAU);ctx.fill()}
+ ctx.restore();
+ const top=f.outline[24].r;ctx.beginPath();ctx.ellipse(f.x+f.r*.08,f.y-top+4,f.r*.2,f.r*.067,-.4+Math.sin(elapsed*4+(f.phase||0))*.12,0,TAU);ctx.fillStyle='#729e51';ctx.fill();
+ if(f.r>50)label(t.name,f.x,f.y+f.r*sy*.49,Math.max(10,f.r*.12),t.dark);ctx.restore();
+}
+function resizeCanvas(){
+ const bounds=canvas.getBoundingClientRect();const compact=window.matchMedia('(max-width: 700px), (max-height: 520px) and (orientation: landscape)').matches;
+ view=compact?{x:135,y:55,w:630,h:640}:{x:0,y:0,w:900,h:710};
+ const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.round(bounds.width*dpr));canvas.height=Math.max(1,Math.round(bounds.height*dpr));
+}
+function draw(){
+ ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.setTransform(canvas.width/view.w,0,0,canvas.height/view.h,-view.x*canvas.width/view.w,-view.y*canvas.height/view.h);
+ ctx.save();if(shakeTime>0&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)ctx.translate(Math.sin(shakeTime*75)*shakeTime*8,0);ctx.fillStyle='#edf1e4';ctx.fillRect(0,0,W,H);ctx.fillStyle='#d5ddc9';for(let x=30;x<W;x+=25)for(let y=80;y<680;y+=25){ctx.beginPath();ctx.arc(x,y,.9,0,TAU);ctx.fill()}
+ rounded(LEFT-11,155,RIGHT-LEFT+22,FLOOR-143,26,'#ffffff50');
+ ctx.strokeStyle='#bdcbae';ctx.lineWidth=9;ctx.lineJoin='round';ctx.lineCap='round';ctx.beginPath();ctx.moveTo(LEFT-5,160);ctx.lineTo(LEFT-5,FLOOR-12);ctx.quadraticCurveTo(LEFT-5,FLOOR+5,LEFT+12,FLOOR+5);ctx.lineTo(RIGHT-12,FLOOR+5);ctx.quadraticCurveTo(RIGHT+5,FLOOR+5,RIGHT+5,FLOOR-12);ctx.lineTo(RIGHT+5,160);ctx.stroke();
+ ctx.strokeStyle=overflow?'#db8073':'#c5b69a';ctx.lineWidth=1.5;ctx.setLineDash([6,7]);ctx.beginPath();ctx.moveTo(LEFT+5,LIMIT);ctx.lineTo(RIGHT-5,LIMIT);ctx.stroke();ctx.setLineDash([]);
+ label('满载线',110,LIMIT+4,11,overflow?'#c36355':'#a0957e');label('MAX',790,LIMIT+4,9,'#a0957e');
+ if(!fruits.length&&mode==='playing'){label('从一颗樱桃开始',450,398,22,'#acb69f');label('移动瞄准 · 点击投放 · 相同水果自动合成',450,429,12,'#a1ad94')}
+ ctx.save();ctx.beginPath();ctx.rect(LEFT,0,RIGHT-LEFT,FLOOR);ctx.clip();for(const f of fusions)drawFusion(f);const sorted=[...fruits].sort((a,b)=>b.r-a.r);for(const f of sorted)drawFruit(f);ctx.restore();
+ if(mode==='playing'){
+  const tier=next[0],r=tiers[tier].r,x=clamp(aimX,LEFT+r+3,RIGHT-r-3);ctx.setLineDash([3,7]);ctx.strokeStyle='#839d6566';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,128+r);let landingY=FLOOR-r;for(const f of fruits){const dx=Math.abs(f.x-x),sum=r+radius(f);if(dx<sum)landingY=Math.min(landingY,f.y-Math.sqrt(sum*sum-dx*dx))}landingY=Math.max(145,landingY);
+  ctx.lineTo(x,landingY);ctx.stroke();ctx.setLineDash([]);ctx.beginPath();ctx.ellipse(x,landingY,r,r,0,0,TAU);ctx.strokeStyle=tiers[tier].dark+'55';ctx.lineWidth=2;ctx.stroke();
+  const preview={x,y:112,tier,r,rotation:0,squash:0,outline:Array.from({length:32},()=>({r}))};drawFruit(preview,true);label(dropCooldown>0?'准备中…':'点击投下 ↓',x,79,11,'#7a8e65');
+ }
+ for(const p of particles){ctx.globalAlpha=clamp(p.life*2,0,1);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,TAU);ctx.fill()}ctx.globalAlpha=1;
+ for(const p of popups){ctx.globalAlpha=Math.min(1,p.life*2);label(p.text,p.x,p.y,18,'#4a7239')}ctx.globalAlpha=1;
+ if(overflow>0&&mode==='playing'){rounded(324,218,252,42,13,'#fff5eee8');label('即将满载 · '+Math.max(1,Math.ceil(2-overflow))+' 秒',450,245,16,'#bc6558')}
+ if(bannerTime>0&&mode==='playing'){rounded(315,267,270,53,18,'#263b32ed');label('✦ '+chain+' 连锁进化！',450,301,23,'#e1f697')}
+ if(mode==='paused'){ctx.fillStyle='#edf1e4dd';ctx.fillRect(0,0,W,H);label('进化已暂停',450,330,30,'#344c3c');label('点击「继续」或按 P 返回',450,365,14)}
+ ctx.restore();
+ $('drop').disabled=mode!=='playing'||dropCooldown>0;$('swap').disabled=mode!=='playing'||!swaps||dropCooldown>0;$('shake').disabled=mode!=='playing'||shakeCooldown>0||energy<40||!fruits.length;$('liquid').disabled=mode!=='playing';
+ $('shakeStatus').textContent=shakeCooldown>0?Math.ceil(shakeCooldown)+' 秒冷却':'消耗 40 能量';$('energyValue').textContent=Math.floor(energy)+'%';
+ $('chainBadge').textContent=chain>1?'✦ '+chain+' 连锁':overflow?'即将满载':'合并 · 进化';$('chainBadge').classList.toggle('hot',chain>1);
+ $('energy').style.width=energy+'%';$('phaseText').textContent=liquid?'低张力 · 果肉缓缓流动':overflow?'注意 · 水果越过满载线':'半流体 · 柔软挤压融合';$('phaseDot').style.background=liquid?'#e8a364':overflow?'#d97b6e':'#7b9b50';$('liquid').classList.toggle('active',liquid);
+}
+let last=0,acc=0;function frame(now){const dt=Math.min((now-last)/1000||0,.05);last=now;if(mode==='playing'){acc+=dt;while(acc>=1/60){physics(1/60);acc-=1/60;if(mode!=='playing'){acc=0;break}}}else acc=0;draw();requestAnimationFrame(frame)}
+function locate(e){const bounds=canvas.getBoundingClientRect();aimX=clamp(view.x+(e.clientX-bounds.left)/bounds.width*view.w,LEFT+25,RIGHT-25)}
+canvas.addEventListener('pointerdown',e=>{if(mode!=='playing'||activePointer!==null)return;e.preventDefault();locate(e);activePointer=e.pointerId;canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(activePointer===null||activePointer===e.pointerId)locate(e)});
+canvas.addEventListener('pointerup',e=>{if(activePointer!==e.pointerId)return;locate(e);activePointer=null;drop()});
+for(const event of ['pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>activePointer=null);
+$('liquid').addEventListener('pointerdown',e=>{if(mode!=='playing')return;e.preventDefault();liquidHeld=true;$('liquid').setPointerCapture(e.pointerId)});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])$('liquid').addEventListener(event,()=>liquidHeld=false);
+window.addEventListener('keydown',e=>{if(e.code==='KeyP'&&!e.repeat){togglePause();return}if(mode!=='playing')return;if(e.code==='KeyX'&&!e.repeat)swapFruit();if(e.code==='KeyS'&&!e.repeat)shake();if(['ArrowLeft','ArrowRight','ArrowDown','Space'].includes(e.code))e.preventDefault();if(e.code==='ArrowLeft'||e.code==='ArrowRight')keys.add(e.code);if((e.code==='Enter'||e.code==='ArrowDown')&&!e.repeat&&e.target?.tagName!=='BUTTON')drop();if(e.code==='Space')liquidHeld=true});
+window.addEventListener('keyup',e=>{keys.delete(e.code);if(e.code==='Space')liquidHeld=false});
+window.addEventListener('blur',()=>{if(mode==='playing')togglePause()});document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='playing')togglePause()});
+$('start').onclick=()=>{sound('drop');reset()};$('restart').onclick=reset;$('pause').onclick=togglePause;$('swap').onclick=swapFruit;$('shake').onclick=shake;$('drop').onclick=drop;
+$('sound').onclick=()=>{soundOn=!soundOn;$('sound').textContent=soundOn?'♫ 音效开':'♪ 音效关';$('sound').setAttribute('aria-pressed',String(soundOn));sound('drop')};
+$('help').onclick=()=>{const panel=$('guide');panel.hidden=!panel.hidden;$('help').setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden){if(mode==='playing')togglePause();panel.scrollIntoView({behavior:'smooth',block:'nearest'})}};
+window.addEventListener('resize',resizeCanvas);if(typeof ResizeObserver!=='undefined')new ResizeObserver(resizeCanvas).observe(canvas);resizeCanvas();
+$('evolution').innerHTML=tiers.map((t,i)=>`<div class="evolution-item" id="tier-${i}"><span class="fruit-icon">${t.emoji}</span><b>${t.name}</b><small id="count-${i}">${i?'+'+t.points+' 分':'起始'}</small>${i<9?'<span class="evo-arrow">›</span>':''}</div>`).join('');
+next=[0,0,1];fruits=[makeFruit(270,625,3),makeFruit(355,632,2),makeFruit(445,600,5),makeFruit(585,568,7),makeFruit(348,543,1)];updateUI();requestAnimationFrame(frame);
+window.fruitFlow={getState:()=>({mode,score,baseScore,bonusScore,chain,bestChain,swaps,shakeCooldown,merges,highest:tiers[highest].name,counts:[...counts],best,next:[...next],energy,liquid,overflow,fruitCount:fruits.length,fruits:fruits.map(f=>({tier:f.tier,x:f.x,y:f.y,r:f.r,halfWidth:extent(f,1,0),halfHeight:extent(f,0,1),squash:f.squash})),finite:fruits.every(f=>[f.x,f.y,f.vx,f.vy,...f.outline.map(p=>p.r)].every(Number.isFinite))})};
+})();
+
+</script></body></html>
