@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { SoftBody } from '../squishy/physics.mjs';
+const advance=(s,n)=>{for(let i=0;i<n;i++)s.step(1/120);};
+const contact={point:[0,2,1],delta:[.4,.1,-.65],radius:.8,pressure:.65};
+test('resting lattice remains stable without artificial motion',()=>{const s=new SoftBody();advance(s,240);assert.ok(s.deformation<1e-5);});
+test('pressure produces a local dent and propagates through the body',()=>{const s=new SoftBody();s.contact=contact;advance(s,150);const near=s.displacement(s.bind(0,2,1),[0,0,0]),far=s.displacement(s.bind(-1.4,.2,-1),[0,0,0]);assert.ok(near[2]<-.1);assert.ok(Math.hypot(...near)>Math.hypot(...far));assert.ok(s.deformation>.05);});
+test('release restores the shape gradually with damped motion',()=>{const s=new SoftBody();s.contact=contact;advance(s,150);const held=s.deformation;s.contact=null;advance(s,12);assert.ok(s.deformation>.02,'should not snap back instantly');advance(s,588);assert.ok(s.deformation<held*.01);});
+test('large pulls and repeated squeezes remain finite and reset exactly',()=>{const s=new SoftBody();for(let j=0;j<8;j++){s.contact={...contact,delta:[Math.sin(j)*1.3,.9,-.8]};advance(s,60);s.contact=null;advance(s,20);}assert.ok(s.p.every(Number.isFinite));assert.ok(s.v.every(Number.isFinite));s.reset();assert.equal(s.deformation,0);assert.ok(s.v.every(v=>v===0));});
+test('skinning weights sum to one at the boundary and across the interior',()=>{const s=new SoftBody();for(const xyz of [[0,2,1],[-1.6,-.2,-1.25],[1.6,3.6,1.55]]){const b=s.bind(...xyz);assert.ok(Math.abs(b.weights.reduce((a,v)=>a+v,0)-1)<1e-6);assert.ok(b.ids.every(i=>i>=0&&i<s.p.length));}});

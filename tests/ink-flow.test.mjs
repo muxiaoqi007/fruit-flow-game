@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createGame,step,dash,W,H} from '../ink-flow/engine.mjs';
+const input={x:600,y:425,held:false};
+function boot(){const g=createGame();g.mode='playing';g.drops=[];g.spawn=10000;return g}
+test('absorption scores once, grows at fifteen drops, and heals',()=>{const g=boot();g.health=80;for(let i=0;i<15;i++){g.drops.push({x:600,y:425,vx:0,vy:0,r:6,kind:'food',phase:0});step(g,1/60,input)}assert.equal(g.absorbed,15);assert.equal(g.level,2);assert.equal(g.player.r,30);assert.equal(g.health,95);assert.ok(g.score>150);assert.equal(g.drops.length,0)});
+test('pollution damages with grace period and dash destroys it',()=>{const g=boot();g.drops.push({x:600,y:425,vx:0,vy:0,r:16,kind:'enemy',phase:0});step(g,.016,input);assert.equal(g.health,82);step(g,.016,input);assert.equal(g.health,82);assert.equal(dash(g,{x:700,y:425}),true);step(g,.016,input);assert.equal(g.drops.length,0);assert.equal(g.score,35);assert.equal(dash(g,input),false)});
+test('pause freezes time and energy, timer ends, no actions after ending',()=>{const g=boot();g.mode='paused';step(g,.02,{...input,held:true});assert.equal(g.time,180);assert.equal(g.energy,100);assert.equal(dash(g,input),false);g.mode='playing';g.time=.01;step(g,.02,input);assert.equal(g.mode,'ended');assert.equal(dash(g,input),false)});
+test('vortex pulls food, drains and replenishes bounded energy',()=>{const g=boot();g.drops.push({x:700,y:425,vx:0,vy:0,r:6,kind:'food',phase:0});step(g,.04,{...input,held:true});assert.ok(g.drops[0].vx<0);assert.ok(g.energy<100);for(let i=0;i<1000;i++)step(g,.02,{...input,held:true});assert.ok(g.energy>=0);for(let i=0;i<500;i++)step(g,.02,input);assert.equal(g.energy,100)});
+test('long sessions keep positions finite, bounded and finish at three minutes',()=>{const g=createGame();g.mode='playing';g.health=1e6;for(let i=0;i<9001;i++){step(g,.02,{x:600+Math.sin(i*.01)*900,y:425+Math.cos(i*.012)*650,held:i%100<25});const p=g.player;assert.ok(Number.isFinite(p.x)&&Number.isFinite(p.y));assert.ok(p.x>=p.r&&p.x<=W-p.r&&p.y>=p.r&&p.y<=H-p.r);g.health=1e6}assert.equal(g.mode,'ended');assert.equal(g.time,0)});

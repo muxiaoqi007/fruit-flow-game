@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {GelBody} from '../squishy/gel.mjs';
+const tick=(s,n)=>{for(let i=0;i<n;i++)s.step(1/120);};
+const mapped=(s,xyz)=>s.map(...xyz,s.bind(...xyz),[0,0,0]);
+const shape=s=>({width:mapped(s,[1.2,1.6,0])[0]-mapped(s,[-1.2,1.6,0])[0],height:mapped(s,[0,3.3,0])[1]-mapped(s,[0,.1,0])[1]});
+const squeeze=(amount,extra={})=>({amount,kind:'knead',axis:[0,1,0],pull:[0,0,0],point:[0,2,.8],delta:[0,0,-amount*.5],radius:.8,pressure:amount*.5,...extra});
+test('a firm squeeze visibly flattens the silhouette and bulges the sides',()=>{const s=new GelBody(),rest=shape(s);s.contact=squeeze(.9);tick(s,240);const held=shape(s);assert.ok(held.height<rest.height*.55,JSON.stringify({rest,held}));assert.ok(held.width>rest.width*1.4,JSON.stringify({rest,held}));});
+test('light, medium and heavy pressures create distinct front-view silhouettes',()=>{const heights=[.2,.6,1].map(p=>{const s=new GelBody();s.contact=squeeze(p);tick(s,180);return shape(s).height;});assert.ok(heights[0]-heights[1]>.6);assert.ok(heights[1]-heights[2]>.6);});
+test('horizontal finger pinches narrow the body and displace material upward',()=>{const s=new GelBody(),rest=shape(s);s.contact=squeeze(.8,{axis:[1,0,0]});tick(s,240);const held=shape(s);assert.ok(held.width<rest.width*.6);assert.ok(held.height>rest.height*1.3);});
+test('grabbing the top produces a long pull while leaving the feet supported',()=>{const s=new GelBody(),top=[0,3.2,.3],base=[0,.05,.3],before=mapped(s,top);s.contact=squeeze(.7,{kind:'stretch',point:top,pull:[.6,1.6,0]});tick(s,200);assert.ok(mapped(s,top)[1]>before[1]+.7);assert.ok(mapped(s,base)[1]<.12);});
+test('release preserves deformation briefly then settles to the original shape',()=>{const s=new GelBody(),rest=shape(s);s.contact=squeeze(.9);tick(s,180);s.contact=null;tick(s,12);assert.ok(shape(s).height<rest.height*.8);tick(s,708);assert.ok(Math.abs(shape(s).height-rest.height)<.005);assert.ok(s.deformation<.001);});
+test('repeated extreme squeeze and stretch stays finite and reset restores all material state',()=>{const s=new GelBody();for(let i=0;i<12;i++){s.contact=squeeze(1,{kind:i%2?'stretch':'knead',axis:i%2?[1,0,0]:[0,1,0],pull:[Math.sin(i)*2,1.5,0]});tick(s,40);for(const xyz of [[0,3,.8],[1,1,0],[-1,.4,-.4]])assert.ok(mapped(s,xyz).every(Number.isFinite));}s.reset();assert.equal(s.strain,0);assert.equal(Math.hypot(...s.pull),0);assert.equal(s.deformation,0);});
